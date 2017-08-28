@@ -1,0 +1,16 @@
+{
+  "name": "Party Club API",
+  "description": "",
+  "repository": "https://github.com/claudneto/ClubApp.API",
+  "logo": "http://node-js-sample.herokuapp.com/node.svg",
+  "keywords": [
+    "node",
+    "express",
+    "static"
+  ],
+  "engines": {
+    "node": "8.3.0",
+    "npm": "5.3.0"
+  },
+  "image": "heroku/nodejs"
+}
