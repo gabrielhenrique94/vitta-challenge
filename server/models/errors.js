@@ -1,14 +1,11 @@
 module.exports = (sequelize, DataTypes) => {
     const error = sequelize.define('error', {
-        message: {
-            type: DataTypes.STRING
-        },
-        route: {
+        error: {
             type: DataTypes.STRING
         }
     });
     error.associate = (models) => {
-
+        //no associations.
     };
-    return square;
+    return error;
 };

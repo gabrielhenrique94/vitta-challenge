@@ -3,6 +3,7 @@ const router = express.Router({mergeParams: true});
 const repository = require('../repositories').territory;
 const squares_repository = require('../repositories').square;
 const utils = require('./api_utils');
+const error_repository = require('../repositories').error;
 
 const validade_territory = (territory) => {
     if (territory.name === undefined) return false;
@@ -23,8 +24,8 @@ module.exports.list_territories = async(req, res) => {
             data: data
         });
     } catch (err) {
-        console.log(err);
         utils.send_error(res, utils.errors.INTERNAL_SERVER_ERROR, 'server/internal-server-error');
+        error_repository.log_error(err);
     }
 };
 
@@ -41,8 +42,8 @@ module.exports.get_territory = async(req, res) => {
             error: false
         });
     } catch (err) { // when territory is not found, promisse is rejected
-        console.log(err);
         utils.send_error(res, utils.errors.NOT_FOUND, 'territories/not-found');
+        error_repository.log_error(err);
     }
 };
 
@@ -51,8 +52,8 @@ module.exports.delete_territory = async(req, res) => {
     try {
         const territory = await repository.get_by_id(id);
     } catch (err) { //when territory is not found, promisse is rejected
-        console.log(err);
         utils.send_error(res, utils.errors.NOT_FOUND, 'territories/not-found');
+        error_repository.log_error(err);
         return; // don't try to delete if territory not exists.
     }
     try {
@@ -61,8 +62,8 @@ module.exports.delete_territory = async(req, res) => {
             error: false
         });
     } catch (err) { // when territory is not found, promisse is rejected
-        console.log(err);
         utils.send_error(res, utils.errors.INTERNAL_SERVER_ERROR, 'server/internal-server-error');
+        error_repository.log_error(err);
     }
 };
 
@@ -82,7 +83,7 @@ module.exports.create_territory = async(req, res) => {
         res.status(200).send(created_territory);
     } catch (err) {
         utils.send_error(res, utils.errors.INTERNAL_SERVER_ERROR, 'server/internal-server-error');
-        console.log(err);
+        error_repository.log_error(err);
     }
 };
 

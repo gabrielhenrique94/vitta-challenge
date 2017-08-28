@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router({mergeParams: true});
 const repository = require('../repositories').square;
 const utils = require('./api_utils');
+const error_repository = require('../repositories').error;
 
 module.exports.get_by_coordinates = async(req, res) => {
     const x = req.params.x;
@@ -24,6 +25,7 @@ module.exports.get_by_coordinates = async(req, res) => {
             error: false
         });
     } catch (err) {
+        error_repository.log_error(err);
         res.status(200).send({
             data: {
                 x: x,
@@ -52,6 +54,7 @@ module.exports.paint = async(req, res) => {
             data: square
         });
     } catch (err) {
+        error_repository.log_error(err);
         utils.send_error(res, utils.errors.INTERNAL_SERVER_ERROR, 'squares/internal_server_error');
     }
 };

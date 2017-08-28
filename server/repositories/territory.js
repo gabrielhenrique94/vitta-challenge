@@ -1,4 +1,5 @@
 const models = require('../models');
+const error_repository = require('./errors');
 
 function normalize_points(territory) {
     // end must be greater than start.
@@ -14,7 +15,7 @@ function normalize_points(territory) {
     }
 }
 
-const _clean_squares = async(territory_id) => {
+const clean_squares = async(territory_id) => {
     await models.square.destroy({
         where: {
             territoryId: territory_id
@@ -54,13 +55,28 @@ module.exports.get_by_id = async(id) => {
 };
 
 module.exports.delete = async(id) => {
-    await  _clean_squares(id);
+    await  clean_squares(id);
     await models.territory.destroy({
         where: {
             id: id
         }
     });
 };
+
+module.exports.find_by_point = async(x, y) => {
+    return await models.territory.find({
+        limit: 1,
+        where: {
+            $and: [
+                {start_x: {$lte: x}},
+                {end_x: {$gte: x}},
+                {start_y: {$lte: y}},
+                {end_y: {$gte: y}}
+            ]
+        }
+    });
+};
+
 
 module.exports.create = async(territory) => {
     normalize_points(territory);
@@ -75,7 +91,18 @@ module.exports.create = async(territory) => {
     return format_territory(result);
 };
 
-
+module.exports.update_painted_area = async(id, area) => {
+    return await models.territory.update(
+        {
+            painted_area: area
+        },
+        {
+            where: {
+                id: id
+            }
+        }
+    )
+};
 module.exports.check_overlay = async(territory) => {
     try {
         const overlay = await models.territory.find({
@@ -128,11 +155,21 @@ module.exports.check_overlay = async(territory) => {
         });
         return (overlay !== null);
     } catch (err) {
-        console.log(err);
+        error_repository.log_error(err);
         return false;
     }
 };
 
-module.exports.getById = async(id) => {
-    return await models.territory.findById(id);
+module.exports.get_by_point = async(x, y) => {
+    return await models.territory.find({
+        limit: 1,
+        where: {
+            $and: [
+                {start_x: {$lte: x}},
+                {end_x: {$gte: x}},
+                {start_y: {$lte: y}},
+                {end_y: {$gte: y}}
+            ]
+        }
+    });
 };
