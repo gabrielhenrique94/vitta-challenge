@@ -1,0 +1,59 @@
+doctype
+html
+    head
+        title Dahsboard
+    body
+        header
+            h1 Dashboard
+
+        h2 Painted area / total area
+        p
+            big #{proportional_area}
+
+        h2 List of territories ordered by most painted area;
+        table(border=1)
+            tr
+                th Id
+                th Territory Name
+                th Area
+                th Painted Area
+            each territory in terr_by_painted
+                tr
+                    td #{territory.id}
+                    td #{territory.name}
+                    td #{territory.area}
+                    td #{territory.painted_area}
+
+        h2 List of territories ordered by most proportional painted area
+        table(border=1)
+            tr
+                th Id
+                th Territory Name
+                th Area
+                th Painted Area
+            each territory in terr_by_proportional_painted
+                tr
+                    td #{territory.id}
+                    td #{territory.name}
+                    td #{territory.area}
+                    td #{territory.painted_area}
+
+        h2 List of last 5 painted squares
+        table(border=1)
+            tr
+                th X
+                th Y
+            each square in painted_squares
+                tr
+                    td #{square.x}
+                    td #{square.y}
+
+        h2 List of last 5 errors
+        table(border=1)
+            tr
+                th error
+                th when
+            each error in errors
+                tr
+                    td #{error.error}
+                    td #{error.createdAt}

@@ -11,3 +11,9 @@ module.exports.log_error = async(error) => {
         console.log(err);
     }
 };
+module.exports.list_last_five = async() => {
+    return await models.error.findAll({
+        limit: 5,
+        order: models.sequelize.literal('createdAt DESC'),
+    });
+};

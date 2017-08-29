@@ -12,6 +12,14 @@ module.exports.is_in_territory = async(x, y) => {
     }
 };
 
+module.exports.list_last_five_painted = async() => {
+    return await models.square.findAll({
+        limit: 5,
+        order: models.sequelize.literal('createdAt DESC'),
+        attributes: ['x', 'y']
+    });
+};
+
 module.exports.get_by_territory_id = async(id) => {
     return await models.square.findAll({
         where: {

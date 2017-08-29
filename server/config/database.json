@@ -1,11 +1,4 @@
 {
-  "production": {
-    "host": "us-cdbr-iron-east-04.cleardb.net",
-    "username": "b82765ad9802a9",
-    "password": "d83f19de",
-    "name": "heroku_021e9bf44737f66",
-    "dialect": "mysql"
-  },
   "development": {
     "host": "127.0.0.1",
     "username": "root",

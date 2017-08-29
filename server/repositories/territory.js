@@ -159,6 +159,29 @@ module.exports.check_overlay = async(territory) => {
         return false;
     }
 };
+module.exports.get_ordered_most_painted = async() => {
+    let list = await models.territory.findAll({
+        order: models.sequelize.literal('painted_area DESC')
+    });
+    let result = [];
+    for (let i = 0; i < list.length; i++)
+        result.push(format_territory(list[i]));
+    return result;
+};
+
+module.exports.get_ordered_most_proportional_painted = async() => {
+    let list = await models.territory.findAll();
+    let result = [];
+    for (let i = 0; i < list.length; i++) {
+        let terr = format_territory(list[i]);
+        terr.proportinal_painted = terr.painted_area / terr.area;
+        result.push(terr);
+    }
+    result.sort((a, b) => {
+        return b.proportinal_painted - a.proportinal_painted;
+    });
+    return result;
+};
 
 module.exports.get_by_point = async(x, y) => {
     return await models.territory.find({
